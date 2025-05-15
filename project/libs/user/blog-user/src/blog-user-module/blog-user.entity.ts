@@ -1,7 +1,6 @@
 import { compare, genSalt, hash } from 'bcrypt';
 
 import { AuthUser, Entity, StorableEntity } from '@project/shared/core';
-
 import { SALT_ROUNDS } from './blog-user.constant';
 
 export class BlogUserEntity extends Entity implements StorableEntity<AuthUser> {
@@ -17,7 +16,7 @@ export class BlogUserEntity extends Entity implements StorableEntity<AuthUser> {
   }
 
   public populate(user?: AuthUser): void {
-    if (!user) {
+    if (! user) {
       return;
     }
 
@@ -26,7 +25,7 @@ export class BlogUserEntity extends Entity implements StorableEntity<AuthUser> {
     this.registrationDate = user.registrationDate;
     this.name = user.name;
     this.passwordHash = user.passwordHash;
-    this.avatarId = user.avatarId ?? undefined;
+    this.avatarId = user.avatarId;
   }
 
   public toPOJO(): AuthUser {

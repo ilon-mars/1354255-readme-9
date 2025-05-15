@@ -8,7 +8,7 @@ export abstract class BaseMemoryRepository<T extends Entity & StorableEntity<Ret
 
   constructor(
     protected entityFactory: EntityFactory<T>
-  ) {}
+  ) { }
 
   public async findById(id: T['id']): Promise<T | null> {
     const foundEntity = this.entities.get(id) || null;

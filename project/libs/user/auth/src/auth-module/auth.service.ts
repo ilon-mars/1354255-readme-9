@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException
+} from '@nestjs/common';
 import dayjs from 'dayjs';
 
 import { BlogUserEntity, BlogUserRepository } from '@project/blog-user';
@@ -9,12 +14,11 @@ import { AuthError } from './auth.constant';
 
 @Injectable()
 export class AuthService {
-    constructor(
-      private readonly blogUserRepository: BlogUserRepository
-    ) {}
+  constructor(
+    private readonly blogUserRepository: BlogUserRepository
+  ) { }
 
-    public async register(dto: CreateUserDto): Promise<BlogUserEntity> {
-
+  public async register(dto: CreateUserDto): Promise<BlogUserEntity> {
     const {email, name, password} = dto;
 
     const blogUser = {
@@ -36,7 +40,7 @@ export class AuthService {
   }
 
   public async verifyUser(dto: LoginUserDto) {
-    const {email, password} = dto;
+    const { email, password } = dto;
     const existUser = await this.blogUserRepository.findByEmail(email);
 
     if (!existUser) {

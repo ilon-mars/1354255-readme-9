@@ -1,3 +1,3 @@
 export interface StorableEntity<T> {
-    toPOJO(): T;
-  }
+  toPOJO(): T;
+}
