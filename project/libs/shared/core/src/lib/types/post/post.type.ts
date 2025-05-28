@@ -5,3 +5,5 @@ export const PostType = {
   Quote: 'QUOTE',
   Photo: 'PHOTO'
 } as const;
+
+export type PostT = (typeof PostType)[keyof typeof PostType]

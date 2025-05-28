@@ -1,12 +1,16 @@
 import {
   ConflictException,
+  HttpException,
+  HttpStatus,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException
 } from '@nestjs/common';
-import dayjs from 'dayjs';
+import { JwtService } from '@nestjs/jwt';
 
 import { BlogUserEntity, BlogUserRepository } from '@project/blog-user';
+import { Token, TokenPayload, User } from '@project/shared/core';
 
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoginUserDto } from '../dto/login-user.dto';
@@ -14,15 +18,20 @@ import { AuthError } from './auth.constant';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
-    private readonly blogUserRepository: BlogUserRepository
+    private readonly blogUserRepository: BlogUserRepository,
+    private readonly jwtService: JwtService
   ) { }
 
   public async register(dto: CreateUserDto): Promise<BlogUserEntity> {
-    const {email, name, password} = dto;
+    const { email, name, avatar, password } = dto;
 
     const blogUser = {
-      email, name, avatarId: '', registrationDate: dayjs(new Date()).toDate(),
+      email,
+      name,
+      avatar,
       passwordHash: ''
     };
 
@@ -62,5 +71,24 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  public async createUserToken(user: User): Promise<Token> {
+    const payload: TokenPayload = {
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+    };
+
+    try {
+      const accessToken = await this.jwtService.signAsync(payload);
+      return { accessToken };
+    } catch (error) {
+      this.logger.error('[Token generation error]: ' + error.message);
+      throw new HttpException(
+        'Ошибка при создании токена.',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 }

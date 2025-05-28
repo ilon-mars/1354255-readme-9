@@ -1,4 +1,4 @@
-export const CommentLength = {
-  MIN: 10,
-  MAX: 300
+export const CommentValidation = {
+  MinLength: 10,
+  MaxLength: 300
 } as const;

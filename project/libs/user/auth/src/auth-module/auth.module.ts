@@ -1,14 +1,24 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 import { BlogUserModule } from '@project/blog-user';
+import { getJwtOptions } from '@project/user-config';
 
+import { JwtAccessStrategy } from '../strategies/jwt-access.strategy';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
 @Module({
-  imports: [BlogUserModule],
+  imports: [
+    BlogUserModule,
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: getJwtOptions,
+    }),
+  ],
   controllers: [AuthController],
-  providers: [AuthService]
+  providers: [AuthService, JwtAccessStrategy],
 })
 
 export class AuthModule { }
