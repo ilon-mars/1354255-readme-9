@@ -3,9 +3,10 @@ export const UserRdoDocs = {
     description: 'The uniq user ID',
     example: '134ce8babd-cc30-4805-9b12-d9420398e7c5',
   },
-  AvatarId: {
-    description: 'User avatar id',
-    example: 'any random text'
+  Avatar: {
+    description: 'User avatar path',
+    example: '/images/user.png',
+    required: false,
   },
   Email: {
     description: 'User email',

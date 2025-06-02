@@ -8,9 +8,9 @@ export class UserRdo {
   @Expose()
   public id: string;
 
-  @ApiProperty(UserRdoDocs.AvatarId)
+  @ApiProperty(UserRdoDocs.Avatar)
   @Expose()
-  public avatarId: string;
+  public avatar: string;
 
   @ApiProperty(UserRdoDocs.Email)
   @Expose()

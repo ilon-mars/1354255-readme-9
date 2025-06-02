@@ -1,7 +1,5 @@
-import { Comment } from './comment.interface';
-import { PostType } from './post.type';
-
-type PostT = (typeof PostType)[keyof typeof PostType]
+import { BlogContents } from './blog-contents';
+import { PostT } from './post.type';
 
 export interface Post {
   id?: string;
@@ -12,7 +10,7 @@ export interface Post {
   originalId?: string;
   originalAuthorId?: string;
   tags: string[];
-  comments: Comment[];
+  content: BlogContents[PostT];
   createdAt?: Date;
   updatedAt?: Date;
 }

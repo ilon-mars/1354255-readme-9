@@ -9,3 +9,17 @@ export const AuthResponseMessage = {
   UserFound: 'User found',
   UserCreated: 'The new user has been successfully created.',
 } as const;
+
+export const AuthValidationMessage = {
+  EmailNotValid: 'The email is not valid',
+} as const;
+
+export const NameValidation = {
+  MinLength: 3,
+  MaxLength: 50
+} as const;
+
+export const PasswordValidation = {
+  MinLength: 6,
+  MaxLength: 12
+} as const;

@@ -9,7 +9,7 @@ import { AuthUser } from '@project/shared/core';
 })
 export class BlogUserModel extends Document implements AuthUser {
   @Prop()
-  public avatarId: string;
+  public avatar: string;
 
   @Prop({
     required: true,
@@ -26,11 +26,6 @@ export class BlogUserModel extends Document implements AuthUser {
     required: true,
   })
   public passwordHash: string;
-
-  @Prop({
-    required: true,
-  })
-  public registrationDate: Date;
 }
 
 export const BlogUserSchema = SchemaFactory.createForClass(BlogUserModel);
