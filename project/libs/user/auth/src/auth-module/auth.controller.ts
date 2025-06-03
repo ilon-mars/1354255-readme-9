@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { NotificationsService } from '@project/notifications';
 import { MongoIdValidationPipe } from '@project/pipes';
 import { fillDto } from '@project/shared/helpers';
 
@@ -16,7 +17,8 @@ import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly notificationsService: NotificationsService
   ) { }
 
   @ApiResponse({
@@ -30,6 +32,10 @@ export class AuthController {
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
+    const { email, name } = newUser;
+
+    await this.notificationsService.registerSubscriber({ email, name });
+
     return newUser.toPOJO();
   }
 
@@ -62,6 +68,7 @@ export class AuthController {
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
+
     return existUser.toPOJO();
   }
 

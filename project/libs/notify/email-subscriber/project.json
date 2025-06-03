@@ -1,0 +1,8 @@
+{
+  "name": "email-subscriber",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/notify/email-subscriber/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

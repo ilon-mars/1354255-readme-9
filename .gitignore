@@ -12,3 +12,5 @@ coverage
 TODO
 *.env
 !*.env.example
+
+**/uploads/*
