@@ -8,6 +8,7 @@ export const AuthResponseMessage = {
   LoggedSuccess: 'User has been successfully logged.',
   UserFound: 'User found',
   UserCreated: 'The new user has been successfully created.',
+  GetNewToken: 'Get new access/refresh tokens'
 } as const;
 
 export const AuthValidationMessage = {
