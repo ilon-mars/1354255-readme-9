@@ -14,6 +14,8 @@ export { AuthUser } from './lib/types/user/auth-user.interface';
 export { User } from './lib/types/user/user.interface';
 
 export { EntityFactory } from './lib/interfaces/entity-factory.interface';
+export { JwtToken } from './lib/interfaces/jwt-token.interface';
+export { RefreshTokenPayload } from './lib/interfaces/refresh-token-payload.interface';
 export { StorableEntity } from './lib/interfaces/storable-entity.interface';
 export { StoredFile } from './lib/interfaces/stored-file.interface';
 export { Subscriber } from './lib/interfaces/subscriber.interface';
