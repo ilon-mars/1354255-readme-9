@@ -7,6 +7,7 @@ export { Post } from './lib/types/post/post.interface';
 export { PostT, PostType } from './lib/types/post/post.type';
 export { QuotePost } from './lib/types/post/quote-post.interface';
 export { SortDirection } from './lib/types/post/sort-direction.enum';
+export { SortType } from './lib/types/post/sort-type.enum';
 export { TextPost } from './lib/types/post/text-post.interface';
 export { VideoPost } from './lib/types/post/video-post.interface';
 

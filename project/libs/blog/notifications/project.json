@@ -1,0 +1,8 @@
+{
+  "name": "blog-notifications",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/blog/notifications/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

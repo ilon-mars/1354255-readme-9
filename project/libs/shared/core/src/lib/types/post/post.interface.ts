@@ -13,4 +13,6 @@ export interface Post {
   content: BlogContents[PostT];
   createdAt?: Date;
   updatedAt?: Date;
+  likesCount: number;
+  commentsCount: number;
 }

@@ -10,8 +10,8 @@ export const CreateUserDtoDocs = {
   },
 
   AvatarId: {
-    description: 'User avatar path',
-    example: '/images/user.png',
+    description: 'User avatar id',
+    example: '9de26ecfgyuierrkkffd67865f49e2',
     required: false,
   },
 

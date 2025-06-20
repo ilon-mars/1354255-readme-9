@@ -2,13 +2,20 @@ export const AuthError = {
   UserExists: 'User with this email exists',
   UserNotFound: 'User not found',
   UserCredentialsWrong: 'User Password or Login is wrong',
+  ServerError: 'Internal server error',
+  PasswordChanged: 'Password was successfully changed.',
+  PasswordChangeUnauthorized: 'Authentication failed or old password is wrong.',
+  RefreshFailure: 'Wrong refresh token',
+  JwtAuthFailed: 'JWT authentification failed',
 } as const;
 
 export const AuthResponseMessage = {
   LoggedSuccess: 'User has been successfully logged.',
   UserFound: 'User found',
   UserCreated: 'The new user has been successfully created.',
-  GetNewToken: 'Get new access/refresh tokens'
+  RefreshSuccess: 'Get a new access/refresh tokens',
+  SubscriptionSuccess: 'Successfully subscribed or unsubscribed',
+  PostsCountSuccess: 'Posts count was successfully altered.',
 } as const;
 
 export const AuthValidationMessage = {

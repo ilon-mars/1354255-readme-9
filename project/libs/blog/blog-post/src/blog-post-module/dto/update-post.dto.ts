@@ -2,13 +2,17 @@ import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsIn,
+  IsMongoId,
   IsOptional,
   IsString,
   Length,
   NotContains,
+  Validate,
   ValidateNested,
 } from 'class-validator';
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 import { PostT, PostType } from '@project/shared/core';
 
@@ -21,11 +25,22 @@ import {
   TextContentDto,
   VideoContentDto,
 } from './post-content.dto';
+import { UpdatePostDtoDocs } from './update-post.docs';
+import { StartsWithLetterValidator } from './create-post.dto';
 
+@ApiExtraModels(
+  LinkContentDto,
+  PhotoContentDto,
+  QuoteContentDto,
+  TextContentDto,
+  VideoContentDto
+)
 export class UpdatePostDto {
+  @ApiProperty(UpdatePostDtoDocs.Type)
   @IsIn(Object.values(PostType))
   public type: PostT;
 
+  @ApiProperty(UpdatePostDtoDocs.Tags)
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
@@ -34,8 +49,21 @@ export class UpdatePostDto {
   @Transform(({ value }) => value.map((item) => item.toLowerCase()))
   @Transform(({ value }) => Array.from(new Set(value)))
   @ArrayMaxSize(PostTagsValidation.MaxCount)
+  @Validate(StartsWithLetterValidator, {
+    message: 'The first character of a tag must be a letter.',
+  })
   public tags: string[];
 
+  @ApiProperty({
+    oneOf: [
+      { $ref: getSchemaPath(LinkContentDto) },
+      { $ref: getSchemaPath(PhotoContentDto) },
+      { $ref: getSchemaPath(QuoteContentDto) },
+      { $ref: getSchemaPath(TextContentDto) },
+      { $ref: getSchemaPath(VideoContentDto) },
+    ],
+    required: false,
+  })
   @IsOptional()
   @ValidateNested()
   @Type(() => PostContent, {
@@ -56,4 +84,14 @@ export class UpdatePostDto {
     | QuoteContentDto
     | TextContentDto
     | VideoContentDto;
+
+  @ApiProperty(UpdatePostDtoDocs.AuthorId)
+  @IsString()
+  @IsMongoId()
+  public authorId: string;
+
+  @ApiProperty(UpdatePostDtoDocs.Published)
+  @IsOptional()
+  @IsBoolean()
+  public published: boolean;
 }

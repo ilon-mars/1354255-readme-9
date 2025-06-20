@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -10,7 +11,14 @@ async function bootstrap() {
   const port = configService.get('application.port');
   const globalPrefix = configService.get('application.globalPrefix');
 
-  app.setGlobalPrefix(globalPrefix);
+  const config = new DocumentBuilder()
+    .setTitle('The API Gateway')
+    .setDescription('The API Gateway API for frontend')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('spec', app, document);
 
   await app.listen(port);
 

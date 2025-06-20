@@ -1,48 +1,66 @@
 import {
-  Body,
   Controller,
-  Delete,
   Get,
+  Param,
   HttpCode,
   HttpStatus,
-  Param,
+  Body,
   Post,
 } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
 
 import { fillDto } from '@project/shared/helpers';
 
 import { BlogCommentService } from './blog-comment.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
+import { AuthorIdDto } from './dto/author-id.dto';
+import { BlogCommentResponseMessage } from './blog-comment.constant';
 
 @Controller('comments')
 export class BlogCommentController {
-  constructor(private readonly blogCommentService: BlogCommentService) { }
+  constructor(private readonly blogCommentService: BlogCommentService) {}
 
+  @ApiResponse({
+    type: CommentRdo,
+    status: HttpStatus.OK,
+    description: BlogCommentResponseMessage.CommentFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogCommentResponseMessage.CommentNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogCommentResponseMessage.ServerError,
+  })
   @Get('/:id')
   public async show(@Param('id') id: string) {
     const commentEntity = await this.blogCommentService.getComment(id);
     return fillDto(CommentRdo, commentEntity.toPOJO());
   }
 
-  @Get('/')
-  public async showAll(@Body('postId') postId: string) {
-    const blogCommentEntities = await this.blogCommentService.getAllComments(postId);
-    const comments = blogCommentEntities.map((blogComment) =>
-      blogComment.toPOJO()
-    );
-    return fillDto(CommentRdo, comments);
-  }
-
-  @Post('/')
-  public async create(@Body() dto: CreateCommentDto) {
-    const newComment = await this.blogCommentService.createComment(dto);
-    return fillDto(CommentRdo, newComment.toPOJO());
-  }
-
-  @Delete('/:id')
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: BlogCommentResponseMessage.CommentDeleted,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogCommentResponseMessage.CommentNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: BlogCommentResponseMessage.Forbidden,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogCommentResponseMessage.ServerError,
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
-  public async destroy(@Param('id') id: string) {
-    await this.blogCommentService.deleteComment(id);
+  @Post('delete/:id')
+  public async destroy(
+    @Param('id') id: string,
+    @Body() { authorId }: AuthorIdDto
+  ) {
+    await this.blogCommentService.deleteComment(id, authorId);
   }
 }
