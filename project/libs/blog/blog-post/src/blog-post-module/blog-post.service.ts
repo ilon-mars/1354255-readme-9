@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { PaginationResult } from '@project/shared/core';
+import { BlogCommentService, CreateCommentDto, BlogCommentEntity, BlogCommentQuery } from '@project/blog-comment';
 
 import { BlogPostEntity } from './blog-post.entity';
 import { BlogPostFactory } from './blog-post.factory';
@@ -11,9 +12,12 @@ import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class BlogPostService {
-  constructor(private readonly blogPostRepository: BlogPostRepository) { }
+  constructor(
+    private readonly blogPostRepository: BlogPostRepository,
+    private readonly blogCommentService: BlogCommentService
+  ) { }
 
-  public async getAllPosts(
+  public async getPosts(
     query?: BlogPostQuery
   ): Promise<PaginationResult<BlogPostEntity>> {
     return this.blogPostRepository.find(query);
@@ -26,12 +30,16 @@ export class BlogPostService {
     return newPost;
   }
 
-  public async deletePost(id: string): Promise<void> {
-    try {
-      await this.blogPostRepository.deleteById(id);
-    } catch {
-      throw new NotFoundException(`Post with ID ${id} not found`);
+  public async deletePost(userId: string, postId): Promise<void> {
+    const existsPost = await this.blogPostRepository.findById(postId);
+    if (!existsPost) {
+      throw new NotFoundException(`Post with ID ${postId} not found`);
     }
+    if (existsPost.authorId !== userId) {
+      throw new ForbiddenException('Users can only delete their own posts');
+    }
+
+    await this.blogPostRepository.deleteById(postId);
   }
 
   public async getPost(id: string): Promise<BlogPostEntity> {
@@ -45,6 +53,10 @@ export class BlogPostService {
     const existsPost = await this.blogPostRepository.findById(id);
     let isSameTags = true;
     let hasChanges = false;
+
+    if (existsPost.authorId !== dto.authorId) {
+      throw new ForbiddenException('Users can only edit their own posts');
+    }
 
     for (const [key, value] of Object.entries(dto)) {
       if (value !== undefined && key !== 'tags' && existsPost[key] !== value) {
@@ -72,5 +84,79 @@ export class BlogPostService {
     await this.blogPostRepository.update(existsPost);
 
     return existsPost;
+  }
+
+  public async addLike(userId: string, postId: string) {
+    const existsPost = await this.blogPostRepository.findById(postId);
+
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+
+    await this.blogPostRepository.addLike(userId, postId);
+  }
+
+  public async deleteLike(userId: string, postId: string) {
+    const existsPost = await this.blogPostRepository.findById(postId);
+
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+
+    await this.blogPostRepository.deleteLike(userId, postId);
+  }
+
+  public async createRepost(userId: string, postId: string) {
+    const existsPost = await this.blogPostRepository.findById(postId);
+
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+
+    existsPost.originalAuthorId = existsPost.authorId;
+    existsPost.originalId = existsPost.id;
+    existsPost.reposted = true;
+
+    delete existsPost.createdAt;
+
+    existsPost.id = undefined;
+    existsPost.authorId = userId;
+
+    delete existsPost.commentsCount;
+    delete existsPost.likesCount;
+
+    await this.blogPostRepository.save(existsPost);
+
+    return existsPost;
+  }
+
+  public async createComment(postId: string, dto: CreateCommentDto) {
+    const existsPost = await this.blogPostRepository.findById(postId);
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+    const newComment = await this.blogCommentService.createComment(postId, dto);
+    return newComment;
+  }
+
+  public async getComments(
+    postId: string,
+    query: BlogCommentQuery
+  ): Promise<PaginationResult<BlogCommentEntity>> {
+    const existsPost = await this.blogPostRepository.findById(postId);
+
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+
+    return this.blogCommentService.getComments(postId, query);
+  }
+
+  public async getPostsToNotify() {
+    return this.blogPostRepository.getPostsToNotify();
+  }
+
+  public async makeNotifyRecord() {
+    await this.blogPostRepository.makeNotifyRecord();
   }
 }

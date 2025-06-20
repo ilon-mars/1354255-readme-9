@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
 import { BlogUserModule } from '@project/blog-user';
-import { NotificationsModule } from '@project/notifications';
+import { NotificationsModule } from 'libs/user/notifications/src';
 import { getJwtOptions } from '@project/user-config';
 
 import { RefreshTokenModule } from '../refresh-token-module/refresh-token.module';

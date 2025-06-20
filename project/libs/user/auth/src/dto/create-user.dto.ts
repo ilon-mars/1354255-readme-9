@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, IsUrl, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsMongoId,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 
 import {
   AuthValidationMessage,
@@ -19,7 +25,8 @@ export class CreateUserDto {
   public name: string;
 
   @ApiProperty(CreateUserDtoDocs.AvatarId)
-  @IsUrl()
+  @IsMongoId()
+  @IsOptional()
   public avatar?: string;
 
   @ApiProperty(CreateUserDtoDocs.Password)
