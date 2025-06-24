@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-
 import { BaseMongoRepository } from '@project/data-access';
-
+import { Model } from 'mongoose';
 import { BlogUserEntity } from './blog-user.entity';
 import { BlogUserFactory } from './blog-user.factory';
 import { BlogUserModel } from './blog-user.model';
@@ -12,7 +10,7 @@ import { BlogUserModel } from './blog-user.model';
 export class BlogUserRepository extends BaseMongoRepository<BlogUserEntity, BlogUserModel> {
   constructor(
     entityFactory: BlogUserFactory,
-    @InjectModel(BlogUserModel.name) blogUserModel: Model<BlogUserModel>
+    @InjectModel(BlogUserModel.name) blogUserModel: Model<BlogUserModel>,
   ) {
     super(entityFactory, blogUserModel);
   }

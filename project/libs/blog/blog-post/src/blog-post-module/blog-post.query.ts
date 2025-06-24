@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { PostT, PostType, SortDirection, SortType } from '@project/shared/core';
 import { Transform } from 'class-transformer';
 import {
   IsArray,
@@ -6,17 +8,9 @@ import {
   IsMongoId,
   IsNumber,
   IsOptional,
-  IsString
+  IsString,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-
-import { PostT, PostType, SortDirection, SortType } from '@project/shared/core';
-
-import {
-  DEFAULT_PAGE_COUNT,
-  DEFAULT_POST_COUNT_LIMIT,
-  PostSort,
-} from './blog-post.constant';
+import { DEFAULT_PAGE_COUNT, DEFAULT_POST_COUNT_LIMIT, PostSort } from './blog-post.constant';
 
 export class BlogPostQuery {
   @ApiProperty({

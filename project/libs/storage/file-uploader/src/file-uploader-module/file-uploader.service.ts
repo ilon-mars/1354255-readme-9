@@ -1,21 +1,14 @@
-import {
-  Inject,
-  Injectable,
-  Logger,
-  NotFoundException
-} from '@nestjs/common';
+import 'multer';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
+import { StoredFile } from '@project/shared/core';
+import { StorageConfig } from '@project/storage-config';
 import dayjs from 'dayjs';
 import { ensureDir } from 'fs-extra';
 import { extension } from 'mime-types';
-import 'multer';
 import { randomUUID } from 'node:crypto';
 import { writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-
-import { StoredFile } from '@project/shared/core';
-import { StorageConfig } from '@project/storage-config';
-
 import { FileUploaderEntity } from './file-uploader.entity';
 import { FileUploaderFactory } from './file-uploader.factory';
 import { FileUploaderRepository } from './file-uploader.repository';
@@ -28,8 +21,8 @@ export class FileUploaderService {
   constructor(
     @Inject(StorageConfig.KEY)
     private readonly config: ConfigType<typeof StorageConfig>,
-    private readonly fileRepository: FileUploaderRepository
-  ) { }
+    private readonly fileRepository: FileUploaderRepository,
+  ) {}
 
   private getUploadDirectoryPath(): string {
     return this.config.uploadDirectory;
@@ -41,11 +34,7 @@ export class FileUploaderService {
   }
 
   private getDestinationFilePath(filename: string): string {
-    return join(
-      this.getUploadDirectoryPath(),
-      this.getSubUploadDirectoryPath(),
-      filename
-    );
+    return join(this.getUploadDirectoryPath(), this.getSubUploadDirectoryPath(), filename);
   }
 
   public async writeFile(file: Express.Multer.File): Promise<StoredFile> {
@@ -72,9 +61,7 @@ export class FileUploaderService {
     }
   }
 
-    public async saveFile(
-    file: Express.Multer.File
-  ): Promise<FileUploaderEntity> {
+  public async saveFile(file: Express.Multer.File): Promise<FileUploaderEntity> {
     const storedFile = await this.writeFile(file);
     const fileEntity = new FileUploaderFactory().create({
       hashName: storedFile.filename,

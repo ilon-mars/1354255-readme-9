@@ -1,6 +1,5 @@
-import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-
+import { Expose } from 'class-transformer';
 import { TokenPayloadRdoDocs } from './token-payload.docs';
 
 export class TokenPayloadRdo {

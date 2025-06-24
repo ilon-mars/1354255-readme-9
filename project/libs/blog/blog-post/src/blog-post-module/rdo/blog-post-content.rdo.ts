@@ -1,6 +1,5 @@
-import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-
+import { Expose } from 'class-transformer';
 import { BlogPostContentRdoDocs } from './blog-post-content.docs';
 
 export class BlogPostContentRdo {

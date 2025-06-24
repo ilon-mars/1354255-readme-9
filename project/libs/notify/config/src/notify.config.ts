@@ -72,9 +72,7 @@ const validationSchema = Joi.object({
 function validateConfig(config: NotifyConfig): void {
   const { error } = validationSchema.validate(config, { abortEarly: true });
   if (error) {
-    throw new Error(
-      `[Notifications Config Validation Error]: ${error.message}`
-    );
+    throw new Error(`[Notifications Config Validation Error]: ${error.message}`);
   }
 }
 
@@ -84,10 +82,7 @@ function getConfig(): NotifyConfig {
     port: parseInt(process.env.PORT || `${DefaultPort.App}`, 10),
     db: {
       host: process.env.MONGO_HOST,
-      port: parseInt(
-        process.env.MONGO_PORT ?? DefaultPort.Mongo.toString(),
-        10
-      ),
+      port: parseInt(process.env.MONGO_PORT ?? DefaultPort.Mongo.toString(), 10),
       name: process.env.MONGO_DB,
       user: process.env.MONGO_USER,
       password: process.env.MONGO_PASSWORD,
@@ -96,20 +91,14 @@ function getConfig(): NotifyConfig {
     rabbit: {
       host: process.env.RABBIT_HOST,
       password: process.env.RABBIT_PASSWORD,
-      port: parseInt(
-        process.env.RABBIT_PORT ?? DefaultPort.Rabbit.toString(),
-        10
-      ),
+      port: parseInt(process.env.RABBIT_PORT ?? DefaultPort.Rabbit.toString(), 10),
       user: process.env.RABBIT_USER,
       queue: process.env.RABBIT_QUEUE,
       exchange: process.env.RABBIT_EXCHANGE,
     },
     mail: {
       host: process.env.MAIL_SMTP_HOST,
-      port: parseInt(
-        process.env.MAIL_SMTP_PORT ?? DefaultPort.Smtp.toString(),
-        10
-      ),
+      port: parseInt(process.env.MAIL_SMTP_PORT ?? DefaultPort.Smtp.toString(), 10),
       user: process.env.MAIL_USER_NAME,
       password: process.env.MAIL_USER_PASSWORD,
       from: process.env.MAIL_FROM,

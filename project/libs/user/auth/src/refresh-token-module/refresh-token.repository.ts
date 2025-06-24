@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-
 import { BaseMongoRepository } from '@project/data-access';
-
+import { Model } from 'mongoose';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import { RefreshTokenFactory } from './refresh-token.factory';
 import { RefreshTokenModel } from './refresh-token.model';
@@ -15,7 +13,7 @@ export class RefreshTokenRepository extends BaseMongoRepository<
 > {
   constructor(
     entityFactory: RefreshTokenFactory,
-    @InjectModel(RefreshTokenModel.name) blogUserModel: Model<RefreshTokenModel>
+    @InjectModel(RefreshTokenModel.name) blogUserModel: Model<RefreshTokenModel>,
   ) {
     super(entityFactory, blogUserModel);
   }
@@ -24,9 +22,7 @@ export class RefreshTokenRepository extends BaseMongoRepository<
     return this.model.deleteOne({ tokenId }).exec();
   }
 
-  public async findByTokenId(
-    tokenId: string
-  ): Promise<RefreshTokenEntity | null> {
+  public async findByTokenId(tokenId: string): Promise<RefreshTokenEntity | null> {
     const refreshTokenDocument = await this.model.findOne({ tokenId }).exec();
     return this.createEntityFromDocument(refreshTokenDocument);
   }

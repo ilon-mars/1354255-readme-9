@@ -1,8 +1,6 @@
 import { Comment, Entity, StorableEntity } from '@project/shared/core';
 
-export class BlogCommentEntity
-  extends Entity
-  implements StorableEntity<Comment> {
+export class BlogCommentEntity extends Entity implements StorableEntity<Comment> {
   public text: string;
   public authorId: string;
   public postId: string;

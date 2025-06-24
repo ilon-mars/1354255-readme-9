@@ -21,5 +21,5 @@ export const UpdatePostDtoDocs = {
     description: 'Whether the post is published',
     example: true,
     required: false,
-  }
+  },
 } as const;

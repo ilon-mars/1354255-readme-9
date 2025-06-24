@@ -36,8 +36,8 @@ import { PostCreateDto } from './dto/post-create.dto';
 import { PostUpdateDto } from './dto/post-update.dto';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { CheckAuthGuard } from './guards/check-auth.guard';
-import { transformPost } from './helpers/transform-post';
 import { fillAuthorInfo } from './helpers/fill-author-info';
+import { transformPost } from './helpers/transform-post';
 
 @Controller('posts')
 @UseFilters(AxiosExceptionFilter)

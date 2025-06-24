@@ -1,5 +1,4 @@
 import { PostType } from '@project/shared/core';
-
 import { PostLinkValidation, PostQuoteValidation, PostTextValidation } from '../blog-post.constant';
 
 export const BlogPostContentRdoDocs = {
@@ -44,5 +43,5 @@ export const BlogPostContentRdoDocs = {
   Text: {
     description: `Post main text. Used with ${PostType.Text}. ${PostTextValidation.Text.MinLength}-${PostTextValidation.Text.MaxLength} characters.`,
     example: 'Основной текст публикации, от 100 до 1024 символов',
-  }
+  },
 } as const;

@@ -1,22 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-
+import { Prisma } from '@prisma/client';
 import { PrismaClientService } from '@project/blog-models';
-import { Comment, PaginationResult, SortDirection } from '@project/shared/core';
 import { BasePostgresRepository } from '@project/data-access';
-
+import { Comment, PaginationResult, SortDirection } from '@project/shared/core';
 import { BlogCommentEntity } from './blog-comment.entity';
 import { BlogCommentFactory } from './blog-comment.factory';
 import { BlogCommentQuery } from './blog-comment.query';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
-export class BlogCommentRepository extends BasePostgresRepository<
-  BlogCommentEntity,
-  Comment
-> {
+export class BlogCommentRepository extends BasePostgresRepository<BlogCommentEntity, Comment> {
   constructor(
     entityFactory: BlogCommentFactory,
-    readonly client: PrismaClientService
+    readonly client: PrismaClientService,
   ) {
     super(entityFactory, client);
   }
@@ -43,9 +38,7 @@ export class BlogCommentRepository extends BasePostgresRepository<
     return this.createEntityFromDocument(document);
   }
 
-  private async getCommentCount(
-    where: Prisma.CommentWhereInput
-  ): Promise<number> {
+  private async getCommentCount(where: Prisma.CommentWhereInput): Promise<number> {
     return this.client.comment.count({ where });
   }
 
@@ -55,10 +48,9 @@ export class BlogCommentRepository extends BasePostgresRepository<
 
   public async findByPostId(
     postId: string,
-    query: BlogCommentQuery
+    query: BlogCommentQuery,
   ): Promise<PaginationResult<BlogCommentEntity>> {
-    const skip =
-      query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
+    const skip = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const take = query?.limit;
     const where: Prisma.CommentWhereInput = {};
     where.postId = postId;

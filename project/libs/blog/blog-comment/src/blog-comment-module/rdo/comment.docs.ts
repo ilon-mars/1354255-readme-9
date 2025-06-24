@@ -17,5 +17,5 @@ export const CommentRdoDocs = {
   },
   CreatedAt: {
     description: 'Created at',
-  }
+  },
 } as const;

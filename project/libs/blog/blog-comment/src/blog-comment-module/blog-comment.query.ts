@@ -1,7 +1,8 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional } from 'class-validator';
-import { MAX_COMMENT_LIMIT, DEFAULT_PAGE_COUNT } from './blog-comment.constant';
-import { ApiProperty } from '@nestjs/swagger';
+import { DEFAULT_PAGE_COUNT, MAX_COMMENT_LIMIT } from './blog-comment.constant';
+
 export class BlogCommentQuery {
   @ApiProperty({
     description: 'Max items per page',

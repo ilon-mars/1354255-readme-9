@@ -1,10 +1,4 @@
-import {
-  BlogContents,
-  Entity,
-  Post,
-  PostT,
-  StorableEntity,
-} from '@project/shared/core';
+import { BlogContents, Entity, Post, PostT, StorableEntity } from '@project/shared/core';
 
 export class BlogPostEntity extends Entity implements StorableEntity<Post> {
   public type: PostT;

@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-
 import { LoggedUserRdoDocs } from './logged-user.docs';
 
 export class LoggedUserRdo {

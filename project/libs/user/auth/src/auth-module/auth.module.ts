@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-
 import { BlogUserModule } from '@project/blog-user';
-import { NotificationsModule } from 'libs/user/notifications/src';
 import { getJwtOptions } from '@project/user-config';
-
+import { NotificationsModule } from '@project/user-notifications';
 import { RefreshTokenModule } from '../refresh-token-module/refresh-token.module';
 import { JwtAccessStrategy } from '../strategies/jwt-access.strategy';
 import { JwtRefreshStrategy } from '../strategies/jwt-refresh.strategy';
@@ -24,7 +22,6 @@ import { AuthService } from './auth.service';
     RefreshTokenModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAccessStrategy, LocalStrategy, JwtRefreshStrategy]
+  providers: [AuthService, JwtAccessStrategy, LocalStrategy, JwtRefreshStrategy],
 })
-
-export class AuthModule { }
+export class AuthModule {}

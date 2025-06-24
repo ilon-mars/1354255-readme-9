@@ -1,7 +1,7 @@
 export const CreateUserDtoDocs = {
   Email: {
     description: 'User unique address',
-    example: 'user@user.ru'
+    example: 'user@user.ru',
   },
 
   Name: {
@@ -18,5 +18,5 @@ export const CreateUserDtoDocs = {
   Password: {
     description: 'Password',
     example: '123456',
-  }
+  },
 } as const;

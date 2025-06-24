@@ -9,7 +9,7 @@ export {
   PostContent,
   QuoteContentDto,
   TextContentDto,
-  VideoContentDto
+  VideoContentDto,
 } from './blog-post-module/dto/post-content.dto';
 
 export { BlogPostRdo } from './blog-post-module/rdo/blog-post.rdo';

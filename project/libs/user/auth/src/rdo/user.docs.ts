@@ -10,10 +10,10 @@ export const UserRdoDocs = {
   },
   Email: {
     description: 'User email',
-    example: 'user@user.local'
+    example: 'user@user.local',
   },
   Name: {
     description: 'User name',
-    example: 'Keks'
-  }
+    example: 'Keks',
+  },
 } as const;

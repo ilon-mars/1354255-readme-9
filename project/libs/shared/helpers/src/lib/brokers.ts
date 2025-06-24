@@ -1,5 +1,4 @@
 import { ConfigService } from '@nestjs/config';
-
 import { getRabbitMQConnectionString } from './common';
 
 export function getRabbitMQOptions(optionSpace) {

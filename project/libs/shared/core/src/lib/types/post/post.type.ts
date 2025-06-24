@@ -3,7 +3,7 @@ export const PostType = {
   Link: 'LINK',
   Video: 'VIDEO',
   Quote: 'QUOTE',
-  Photo: 'PHOTO'
+  Photo: 'PHOTO',
 } as const;
 
-export type PostT = (typeof PostType)[keyof typeof PostType]
+export type PostT = (typeof PostType)[keyof typeof PostType];

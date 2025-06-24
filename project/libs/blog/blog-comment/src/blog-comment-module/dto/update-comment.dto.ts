@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Length } from 'class-validator';
-
 import { CommentValidation } from './comment.constant';
 import { UpdateCommentDtoDocs } from './update-comment.docs';
 

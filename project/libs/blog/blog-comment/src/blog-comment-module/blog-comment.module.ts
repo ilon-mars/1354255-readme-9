@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-
 import { PrismaClientModule } from '@project/blog-models';
 import { BlogCommentController } from './blog-comment.controller';
 import { BlogCommentFactory } from './blog-comment.factory';
@@ -12,4 +11,4 @@ import { BlogCommentService } from './blog-comment.service';
   controllers: [BlogCommentController],
   exports: [BlogCommentService],
 })
-export class BlogCommentModule { }
+export class BlogCommentModule {}
