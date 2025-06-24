@@ -1,3 +1,5 @@
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { PostT, PostType } from '@project/shared/core';
 import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -12,11 +14,8 @@ import {
   Validate,
   ValidateNested,
 } from 'class-validator';
-import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
-
-import { PostT, PostType } from '@project/shared/core';
-
 import { PostTagsValidation } from '../blog-post.constant';
+import { StartsWithLetterValidator } from './create-post.dto';
 import {
   LinkContentDto,
   PhotoContentDto,
@@ -26,15 +25,8 @@ import {
   VideoContentDto,
 } from './post-content.dto';
 import { UpdatePostDtoDocs } from './update-post.docs';
-import { StartsWithLetterValidator } from './create-post.dto';
 
-@ApiExtraModels(
-  LinkContentDto,
-  PhotoContentDto,
-  QuoteContentDto,
-  TextContentDto,
-  VideoContentDto
-)
+@ApiExtraModels(LinkContentDto, PhotoContentDto, QuoteContentDto, TextContentDto, VideoContentDto)
 export class UpdatePostDto {
   @ApiProperty(UpdatePostDtoDocs.Type)
   @IsIn(Object.values(PostType))

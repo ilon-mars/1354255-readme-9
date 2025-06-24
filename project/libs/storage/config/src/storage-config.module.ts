@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
 import storageConfig from './storage.config';
 
 const ENV_FILE_PATH = 'apps/storage/file-vault.env';
@@ -15,5 +14,4 @@ const ENV_FILE_PATH = 'apps/storage/file-vault.env';
     }),
   ],
 })
-
 export class StorageConfigModule {}

@@ -1,14 +1,14 @@
-import { randomUUID } from 'crypto';
-
 import { Entity, EntityFactory, StorableEntity } from '@project/shared/core';
+import { randomUUID } from 'crypto';
 import { Repository } from './repository.interface';
 
-export abstract class BaseMemoryRepository<T extends Entity & StorableEntity<ReturnType<T['toPOJO']>>> implements Repository<T> {
+export abstract class BaseMemoryRepository<
+  T extends Entity & StorableEntity<ReturnType<T['toPOJO']>>,
+> implements Repository<T>
+{
   protected entities: Map<T['id'], ReturnType<T['toPOJO']>> = new Map();
 
-  constructor(
-    protected entityFactory: EntityFactory<T>
-  ) { }
+  constructor(protected entityFactory: EntityFactory<T>) {}
 
   public async findById(id: T['id']): Promise<T | null> {
     const foundEntity = this.entities.get(id) || null;

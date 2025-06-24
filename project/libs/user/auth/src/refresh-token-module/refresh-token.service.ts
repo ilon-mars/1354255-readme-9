@@ -1,11 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
-import dayjs from 'dayjs';
-
 import { RefreshTokenPayload } from '@project/shared/core';
 import { parseTime } from '@project/shared/helpers';
 import { jwtConfig } from '@project/user-config';
-
+import dayjs from 'dayjs';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import { RefreshTokenRepository } from './refresh-token.repository';
 
@@ -14,8 +12,8 @@ export class RefreshTokenService {
   constructor(
     private readonly refreshTokenRepository: RefreshTokenRepository,
     @Inject(jwtConfig.KEY)
-    private readonly jwtOptions: ConfigType<typeof jwtConfig>
-  ) { }
+    private readonly jwtOptions: ConfigType<typeof jwtConfig>,
+  ) {}
 
   public async createRefreshSession(payload: RefreshTokenPayload) {
     const timeValue = parseTime(this.jwtOptions.refreshTokenExpiresIn);
@@ -35,9 +33,7 @@ export class RefreshTokenService {
   }
 
   public async isExists(tokenId: string): Promise<boolean> {
-    const refreshToken = await this.refreshTokenRepository.findByTokenId(
-      tokenId
-    );
+    const refreshToken = await this.refreshTokenRepository.findByTokenId(tokenId);
     return refreshToken !== null;
   }
 

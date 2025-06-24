@@ -1,10 +1,9 @@
 import { PostType } from '@project/shared/core';
-
 import {
   PostLinkValidation,
   PostQuoteValidation,
   PostTextValidation,
-  PostVideoValidation
+  PostVideoValidation,
 } from '../blog-post.constant';
 
 export const LinkContentDtoDocs = {
@@ -17,16 +16,15 @@ export const LinkContentDtoDocs = {
     description: `Post description. Used with ${PostType.Link} (optional). Max ${PostLinkValidation.MaxLength} characters.`,
     example: 'Описание максимум 300 символов',
     required: false,
-  }
+  },
 } as const;
 
 export const PhotoContentDtoDocs = {
   PictureId: {
     description: `Mongo id of uploaded picture.`,
     example: 'localhost/keks.jpg',
-  }
+  },
 } as const;
-
 
 export const QuoteContentDtoDocs = {
   Quote: {
@@ -37,7 +35,7 @@ export const QuoteContentDtoDocs = {
   Author: {
     description: `Post quote author. Used with ${PostType.Quote}. ${PostQuoteValidation.Author.MinLength}-${PostQuoteValidation.Author.MaxLength} characters.`,
     example: 'Автор цитаты, от 3 до 50 символов',
-  }
+  },
 } as const;
 
 export const TextContentDtoDocs = {
@@ -54,7 +52,7 @@ export const TextContentDtoDocs = {
   Text: {
     description: `Post main text. Used with ${PostType.Text}. ${PostTextValidation.Text.MinLength}-${PostTextValidation.Text.MaxLength} characters.`,
     example: 'Основной текст публикации, от 100 до 1024 символов',
-  }
+  },
 } as const;
 
 export const VideoContentDtoDocs = {
@@ -66,5 +64,5 @@ export const VideoContentDtoDocs = {
   Url: {
     description: `Post url. Used with ${PostType.Link} and ${PostType.Video} types. When used with ${PostType.Video} must be a valid youtube link`,
     example: 'localhost/keks.jpg',
-  }
+  },
 } as const;

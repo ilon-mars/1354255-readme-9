@@ -1,8 +1,6 @@
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Controller } from '@nestjs/common';
-
 import { Post, RabbitRouting } from '@project/shared/core';
-
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { EmailSubscriberService } from './email-subscriber.service';
 import { MailService } from './mail-module/mail.service';
@@ -11,8 +9,8 @@ import { MailService } from './mail-module/mail.service';
 export class EmailSubscriberController {
   constructor(
     private readonly subscriberService: EmailSubscriberService,
-    private readonly mailService: MailService
-  ) { }
+    private readonly mailService: MailService,
+  ) {}
 
   @RabbitSubscribe({
     exchange: 'readme.notify',
@@ -38,10 +36,7 @@ export class EmailSubscriberController {
     console.log('notify new posts');
     const subscribers = await this.subscriberService.getAllSubscribers();
     for (const subscriber of subscribers) {
-      await this.mailService.sendNotifyNewPosts(
-        data?.posts,
-        subscriber.toPOJO()
-      );
+      await this.mailService.sendNotifyNewPosts(data?.posts, subscriber.toPOJO());
     }
   }
 }

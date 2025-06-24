@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
-
 import { Comment } from '@project/shared/core';
+import { Expose } from 'class-transformer';
 import { CommentRdoDocs } from './comment.docs';
 
 export class CommentRdo implements Comment {

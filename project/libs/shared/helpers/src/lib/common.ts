@@ -1,7 +1,6 @@
 import { $Enums, Prisma } from '@prisma/client';
-import { ClassTransformOptions, plainToInstance } from 'class-transformer';
-
 import { BlogContents, PostT } from '@project/shared/core';
+import { ClassTransformOptions, plainToInstance } from 'class-transformer';
 
 export type DateTimeUnit = 'h' | 's' | 'd' | 'm' | 'y';
 export type TimeAndUnit = { value: number; unit: DateTimeUnit };
@@ -29,7 +28,14 @@ export function fillDto<T, V>(
   });
 }
 
-export function getMongoConnectionString({ username, password, host, port, databaseName, authDatabase }): string {
+export function getMongoConnectionString({
+  username,
+  password,
+  host,
+  port,
+  databaseName,
+  authDatabase,
+}): string {
   return `mongodb://${username}:${password}@${host}:${port}/${databaseName}?authSource=${authDatabase}`;
 }
 
@@ -49,22 +55,16 @@ export function postDocumentToPojo(
     reposted: boolean;
     originalId: string | null;
     originalAuthorId: string | null;
-  }
+  },
 ) {
   return {
     ...document,
     tags: document.tags.map(({ name }) => name),
-    content:
-      document.content as BlogContents[PostT],
+    content: document.content as BlogContents[PostT],
   };
 }
 
-export function getRabbitMQConnectionString({
-  user,
-  password,
-  host,
-  port,
-}): string {
+export function getRabbitMQConnectionString({ user, password, host, port }): string {
   return `amqp://${user}:${password}@${host}:${port}`;
 }
 

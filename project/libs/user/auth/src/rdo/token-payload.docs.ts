@@ -12,5 +12,5 @@ export const TokenPayloadRdoDocs = {
   Name: {
     description: 'User name',
     example: 'Keks',
-  }
+  },
 } as const;

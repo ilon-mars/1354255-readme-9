@@ -1,6 +1,5 @@
 import { ConfigService } from '@nestjs/config';
 import { MongooseModuleAsyncOptions } from '@nestjs/mongoose';
-
 import { getMongoConnectionString } from '@project/shared/helpers';
 
 export function getMongooseOptions(): MongooseModuleAsyncOptions {
@@ -14,9 +13,9 @@ export function getMongooseOptions(): MongooseModuleAsyncOptions {
           port: config.get<string>('db.port'),
           authDatabase: config.get<string>('db.authBase'),
           databaseName: config.get<string>('db.name'),
-        })
-      }
+        }),
+      };
     },
-    inject: [ConfigService]
-  }
+    inject: [ConfigService],
+  };
 }

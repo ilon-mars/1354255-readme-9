@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { PostT } from '@project/shared/core';
 import {
   IsMongoId,
   IsOptional,
@@ -7,19 +9,20 @@ import {
   Matches,
   MaxLength,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-
-import { PostT } from '@project/shared/core';
-
 import {
   PostLinkValidation,
   PostQuoteValidation,
   PostTextValidation,
   PostVideoValidation,
-  YOUTUBE_REGEXP
+  YOUTUBE_REGEXP,
 } from '../blog-post.constant';
-import { LinkContentDtoDocs, PhotoContentDtoDocs, QuoteContentDtoDocs, TextContentDtoDocs, VideoContentDtoDocs } from './post-content.docs';
-
+import {
+  LinkContentDtoDocs,
+  PhotoContentDtoDocs,
+  QuoteContentDtoDocs,
+  TextContentDtoDocs,
+  VideoContentDtoDocs,
+} from './post-content.docs';
 
 export class PostContent {
   __type: PostT;

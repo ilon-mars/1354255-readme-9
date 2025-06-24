@@ -1,3 +1,5 @@
+import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { PostT, PostType } from '@project/shared/core';
 import { Transform, Type } from 'class-transformer';
 import {
   ArrayMaxSize,
@@ -13,11 +15,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
-
-import { PostT, PostType } from '@project/shared/core';
-
 import { PostTagsValidation } from '../blog-post.constant';
+import { CreatePostDtoDocs } from './create-post.docs';
 import {
   LinkContentDto,
   PhotoContentDto,
@@ -26,7 +25,6 @@ import {
   TextContentDto,
   VideoContentDto,
 } from './post-content.dto';
-import { CreatePostDtoDocs } from './create-post.docs';
 
 const ANY_LETTERS_REGEXP = /^\p{L}.*$/u;
 
@@ -40,13 +38,7 @@ export class StartsWithLetterValidator implements ValidatorConstraintInterface {
   }
 }
 
-@ApiExtraModels(
-  LinkContentDto,
-  PhotoContentDto,
-  QuoteContentDto,
-  TextContentDto,
-  VideoContentDto
-)
+@ApiExtraModels(LinkContentDto, PhotoContentDto, QuoteContentDto, TextContentDto, VideoContentDto)
 export class CreatePostDto {
   @ApiProperty(CreatePostDtoDocs.Type)
   @IsIn(Object.values(PostType))

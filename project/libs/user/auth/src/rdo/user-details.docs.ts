@@ -33,5 +33,5 @@ export const UserDetailsRdoDocs = {
   CreatedAt: {
     description: 'Registration date',
     example: '2025-01-28',
-  }
+  },
 } as const;

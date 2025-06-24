@@ -2,7 +2,7 @@ export const MAX_COMMENT_LIMIT = 10;
 export const DEFAULT_PAGE_COUNT = 1;
 
 export const CommentError = {
-  CommentsNotFound: 'Comments not found.'
+  CommentsNotFound: 'Comments not found.',
 } as const;
 
 export const BlogCommentResponseMessage = {

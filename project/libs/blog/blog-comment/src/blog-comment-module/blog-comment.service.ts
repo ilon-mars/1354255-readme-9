@@ -1,15 +1,13 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-
 import { PaginationResult } from '@project/shared/core';
-
 import { BlogCommentEntity } from './blog-comment.entity';
+import { BlogCommentQuery } from './blog-comment.query';
 import { BlogCommentRepository } from './blog-comment.repository';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { BlogCommentQuery } from './blog-comment.query';
 
 @Injectable()
 export class BlogCommentService {
-  constructor(private readonly blogCommentRepository: BlogCommentRepository) { }
+  constructor(private readonly blogCommentRepository: BlogCommentRepository) {}
 
   public async getComment(id: string): Promise<BlogCommentEntity> {
     return this.blogCommentRepository.findById(id);
@@ -17,14 +15,12 @@ export class BlogCommentService {
 
   public async getComments(
     postId: string,
-    query: BlogCommentQuery
+    query: BlogCommentQuery,
   ): Promise<PaginationResult<BlogCommentEntity>> {
     return await this.blogCommentRepository.findByPostId(postId, query);
   }
 
-  public async createComment(
-    dto: CreateCommentDto
-  ): Promise<BlogCommentEntity> {
+  public async createComment(dto: CreateCommentDto): Promise<BlogCommentEntity> {
     const newComment = new BlogCommentEntity(dto);
     await this.blogCommentRepository.save(newComment);
 

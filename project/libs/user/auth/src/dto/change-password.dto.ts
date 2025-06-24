@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, Length } from 'class-validator';
-
 import { PasswordValidation } from '../auth-module/auth.constant';
 import { ChangePasswordDtoDocs } from './change-password.docs';
 

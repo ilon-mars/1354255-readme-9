@@ -1,8 +1,11 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-
+import {
+  BlogCommentEntity,
+  BlogCommentQuery,
+  BlogCommentService,
+  CreateCommentDto,
+} from '@project/blog-comment';
 import { PaginationResult } from '@project/shared/core';
-import { BlogCommentService, CreateCommentDto, BlogCommentEntity, BlogCommentQuery } from '@project/blog-comment';
-
 import { BlogPostEntity } from './blog-post.entity';
 import { BlogPostFactory } from './blog-post.factory';
 import { BlogPostQuery } from './blog-post.query';
@@ -14,12 +17,10 @@ import { UpdatePostDto } from './dto/update-post.dto';
 export class BlogPostService {
   constructor(
     private readonly blogPostRepository: BlogPostRepository,
-    private readonly blogCommentService: BlogCommentService
-  ) { }
+    private readonly blogCommentService: BlogCommentService,
+  ) {}
 
-  public async getPosts(
-    query?: BlogPostQuery
-  ): Promise<PaginationResult<BlogPostEntity>> {
+  public async getPosts(query?: BlogPostQuery): Promise<PaginationResult<BlogPostEntity>> {
     return this.blogPostRepository.find(query);
   }
 
@@ -46,10 +47,7 @@ export class BlogPostService {
     return this.blogPostRepository.findById(id);
   }
 
-  public async updatePost(
-    id: string,
-    dto: UpdatePostDto
-  ): Promise<BlogPostEntity> {
+  public async updatePost(id: string, dto: UpdatePostDto): Promise<BlogPostEntity> {
     const existsPost = await this.blogPostRepository.findById(id);
     let isSameTags = true;
     let hasChanges = false;
@@ -68,8 +66,7 @@ export class BlogPostService {
         const currentTags = existsPost.tags;
 
         isSameTags =
-          currentTags.length === value.length &&
-          currentTags.every((tag) => value.includes(tag));
+          currentTags.length === value.length && currentTags.every((tag) => value.includes(tag));
 
         if (!isSameTags) {
           existsPost.tags = value;
@@ -141,7 +138,7 @@ export class BlogPostService {
 
   public async getComments(
     postId: string,
-    query: BlogCommentQuery
+    query: BlogCommentQuery,
   ): Promise<PaginationResult<BlogCommentEntity>> {
     const existsPost = await this.blogPostRepository.findById(postId);
 

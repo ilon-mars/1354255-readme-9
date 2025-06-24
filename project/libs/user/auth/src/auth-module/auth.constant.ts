@@ -24,10 +24,10 @@ export const AuthValidationMessage = {
 
 export const NameValidation = {
   MinLength: 3,
-  MaxLength: 50
+  MaxLength: 50,
 } as const;
 
 export const PasswordValidation = {
   MinLength: 6,
-  MaxLength: 12
+  MaxLength: 12,
 } as const;

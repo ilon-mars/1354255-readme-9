@@ -7,14 +7,12 @@ import {
   Param,
   Post,
   Req,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-
-import { NotificationsService } from 'libs/user/notifications/src';
 import { MongoIdValidationPipe } from '@project/pipes';
 import { fillDto } from '@project/shared/helpers';
-
+import { NotificationsService } from '@project/user-notifications';
 import { ChangePasswordDto } from '../dto/change-password.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
@@ -22,20 +20,20 @@ import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { LoggedUserRdo } from '../rdo/logged-user.rdo';
 import { UserRdo } from '../rdo/user.rdo';
+import { UserDetailsRdo } from '../rdo/user-details.rdo';
+import { TokenPairRdo } from '../refresh-token-module/rdo/token-pair.rdo';
 import { AuthError, AuthResponseMessage } from './auth.constant';
 import { AuthService } from './auth.service';
 import { RequestWithTokenPayload } from './request-with-token-payload.interface';
 import { RequestWithUser } from './request-with-user.interface';
-import { TokenPairRdo } from '../refresh-token-module/rdo/token-pair.rdo';
-import { UserDetailsRdo } from '../rdo/user-details.rdo';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly notificationsService: NotificationsService
-  ) { }
+    private readonly notificationsService: NotificationsService,
+  ) {}
 
   @ApiResponse({
     type: UserRdo,
@@ -74,8 +72,7 @@ export class AuthController {
   public async login(@Req() { user }: RequestWithUser) {
     const userToken = await this.authService.createUserToken(user);
 
-    return fillDto(LoggedUserRdo, { ...user.toPOJO(), ...userToken }
-    );
+    return fillDto(LoggedUserRdo, { ...user.toPOJO(), ...userToken });
   }
 
   @ApiResponse({
@@ -142,7 +139,7 @@ export class AuthController {
   @Post('password')
   public async changePassword(
     @Body() dto: ChangePasswordDto,
-    @Req() { user: payload }: RequestWithTokenPayload
+    @Req() { user: payload }: RequestWithTokenPayload,
   ) {
     const updatedUser = await this.authService.changePassword(payload.sub, dto);
 
@@ -166,12 +163,12 @@ export class AuthController {
   @Post('toggle-subscribe/:id')
   public async toggleSubscribe(
     @Param('id', MongoIdValidationPipe) id: string,
-    @Req() { user }: RequestWithTokenPayload
+    @Req() { user }: RequestWithTokenPayload,
   ) {
     await this.authService.toggleSubscription(user.sub, id);
   }
 
-    @ApiResponse({
+  @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: AuthResponseMessage.PostsCountSuccess,
   })
@@ -185,9 +182,7 @@ export class AuthController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('incrementPostsCount/:id')
-  public async incrementPostsCount(
-    @Param('id', MongoIdValidationPipe) id: string
-  ) {
+  public async incrementPostsCount(@Param('id', MongoIdValidationPipe) id: string) {
     await this.authService.incrementPostsCount(id);
   }
   @ApiResponse({
@@ -204,9 +199,7 @@ export class AuthController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('decrementPostsCount/:id')
-  public async decrementPostsCount(
-    @Param('id', MongoIdValidationPipe) id: string
-  ) {
+  public async decrementPostsCount(@Param('id', MongoIdValidationPipe) id: string) {
     await this.authService.decrementPostsCount(id);
   }
 }

@@ -32,10 +32,7 @@ function getConfig(): RabbitConfig {
   const config: RabbitConfig = {
     host: process.env.RABBIT_HOST,
     password: process.env.RABBIT_PASSWORD,
-    port: parseInt(
-      process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(),
-      10
-    ),
+    port: parseInt(process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(), 10),
     user: process.env.RABBIT_USER,
     queue: process.env.RABBIT_QUEUE,
     exchange: process.env.RABBIT_EXCHANGE,

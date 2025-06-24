@@ -1,8 +1,6 @@
 import { Entity, StorableEntity, Subscriber } from '@project/shared/core';
 
-export class EmailSubscriberEntity
-  extends Entity
-  implements StorableEntity<Subscriber> {
+export class EmailSubscriberEntity extends Entity implements StorableEntity<Subscriber> {
   public email: string;
   public name: string;
 

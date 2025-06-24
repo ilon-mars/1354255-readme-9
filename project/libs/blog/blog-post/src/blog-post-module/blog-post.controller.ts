@@ -10,31 +10,31 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { PostContentRequestTransform } from './interceptors/post-content-request-transform.interceptor';
-import { fillDto } from '@project/shared/helpers';
-import { BlogPostService } from './blog-post.service';
-import { BlogPostRdo } from './rdo/blog-post.rdo';
-import { BlogPostQuery } from './blog-post.query';
-import { BlogPostWithPaginationRdo } from './rdo/blog-post-with-pagination.rdo';
-import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
-  CommentRdo,
-  CreateCommentDto,
   BlogCommentQuery,
   BlogCommentWithPaginationRdo,
+  CommentRdo,
+  CreateCommentDto,
 } from '@project/blog-comment';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { BlogPostResponseMessage } from './blog-post.constant';
-import { AuthorIdDto } from './dto/author-id.dto';
 import { BlogNotificationsService } from '@project/blog-notifications';
+import { fillDto } from '@project/shared/helpers';
+import { BlogPostResponseMessage } from './blog-post.constant';
+import { BlogPostQuery } from './blog-post.query';
+import { BlogPostService } from './blog-post.service';
+import { AuthorIdDto } from './dto/author-id.dto';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { PostContentRequestTransform } from './interceptors/post-content-request-transform.interceptor';
+import { BlogPostRdo } from './rdo/blog-post.rdo';
+import { BlogPostWithPaginationRdo } from './rdo/blog-post-with-pagination.rdo';
 
 @ApiTags('posts')
 @Controller('posts')
 export class BlogPostController {
   constructor(
     private readonly blogPostService: BlogPostService,
-    private readonly notificationsService: BlogNotificationsService
+    private readonly notificationsService: BlogNotificationsService,
   ) {}
 
   @ApiResponse({
@@ -138,10 +138,7 @@ export class BlogPostController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('/delete/:postId')
-  public async destroy(
-    @Param('postId') postId: string,
-    @Body() { authorId }: AuthorIdDto
-  ) {
+  public async destroy(@Param('postId') postId: string, @Body() { authorId }: AuthorIdDto) {
     await this.blogPostService.deletePost(authorId, postId);
   }
 
@@ -190,10 +187,7 @@ export class BlogPostController {
   })
   @Post('addLike/:postId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public async saveLike(
-    @Param('postId') postId: string,
-    @Body() { authorId }: AuthorIdDto
-  ) {
+  public async saveLike(@Param('postId') postId: string, @Body() { authorId }: AuthorIdDto) {
     await this.blogPostService.addLike(authorId, postId);
   }
 
@@ -215,10 +209,7 @@ export class BlogPostController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('deleteLike/:postId')
-  public async deleteLike(
-    @Param('postId') postId: string,
-    @Body() { authorId }: AuthorIdDto
-  ) {
+  public async deleteLike(@Param('postId') postId: string, @Body() { authorId }: AuthorIdDto) {
     await this.blogPostService.deleteLike(authorId, postId);
   }
 
@@ -240,10 +231,7 @@ export class BlogPostController {
     description: BlogPostResponseMessage.ServerError,
   })
   @Post('repost/:postId')
-  public async repost(
-    @Param('postId') postId: string,
-    @Body() { authorId }: AuthorIdDto
-  ) {
+  public async repost(@Param('postId') postId: string, @Body() { authorId }: AuthorIdDto) {
     const newPost = await this.blogPostService.createRepost(authorId, postId);
     return fillDto(BlogPostRdo, newPost);
   }
@@ -266,10 +254,7 @@ export class BlogPostController {
     description: BlogPostResponseMessage.ServerError,
   })
   @Post('/:postId/comments')
-  public async createComment(
-    @Param('postId') postId: string,
-    @Body() dto: CreateCommentDto
-  ) {
+  public async createComment(@Param('postId') postId: string, @Body() dto: CreateCommentDto) {
     const newComment = await this.blogPostService.createComment(postId, dto);
     return fillDto(CommentRdo, newComment.toPOJO());
   }
@@ -292,20 +277,12 @@ export class BlogPostController {
     description: BlogPostResponseMessage.ServerError,
   })
   @Get('/:postId/comments')
-  public async getComments(
-    @Param('postId') postId: string,
-    @Query() query: BlogCommentQuery
-  ) {
-    const commentsWithPagination = await this.blogPostService.getComments(
-      postId,
-      query
-    );
+  public async getComments(@Param('postId') postId: string, @Query() query: BlogCommentQuery) {
+    const commentsWithPagination = await this.blogPostService.getComments(postId, query);
 
     const result = {
       ...commentsWithPagination,
-      entities: commentsWithPagination.entities.map((comment) =>
-        comment.toPOJO()
-      ),
+      entities: commentsWithPagination.entities.map((comment) => comment.toPOJO()),
     };
 
     return fillDto(BlogCommentWithPaginationRdo, result);

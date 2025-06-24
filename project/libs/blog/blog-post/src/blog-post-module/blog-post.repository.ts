@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { $Enums, Prisma } from '@prisma/client';
-
 import { PrismaClientService } from '@project/blog-models';
 import { BasePostgresRepository } from '@project/data-access';
 import {
@@ -11,7 +10,6 @@ import {
   SortDirection,
   SortType,
 } from '@project/shared/core';
-
 import { BlogPostEntity } from './blog-post.entity';
 import { BlogPostFactory } from './blog-post.factory';
 import { BlogPostQuery } from './blog-post.query';
@@ -24,13 +22,10 @@ const defaultInclude = {
 };
 
 @Injectable()
-export class BlogPostRepository extends BasePostgresRepository<
-  BlogPostEntity,
-  Post
-> {
+export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, Post> {
   constructor(
     entityFactory: BlogPostFactory,
-    readonly client: PrismaClientService
+    readonly client: PrismaClientService,
   ) {
     super(entityFactory, client);
   }
@@ -52,9 +47,9 @@ export class BlogPostRepository extends BasePostgresRepository<
         tags: {
           connectOrCreate: pojoEntity?.tags
             ? pojoEntity.tags.map((name) => ({
-              where: { name },
-              create: { name },
-            }))
+                where: { name },
+                create: { name },
+              }))
             : [],
         },
       },
@@ -108,10 +103,9 @@ export class BlogPostRepository extends BasePostgresRepository<
 
   public async find(
     query?: BlogPostQuery,
-    currentUserId?: string
+    currentUserId?: string,
   ): Promise<PaginationResult<BlogPostEntity>> {
-    const skip =
-      query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
+    const skip = query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
     const take = query?.limit;
     const where: Prisma.PostWhereInput = {};
     const orderBy: Prisma.PostOrderByWithRelationInput = {};
@@ -175,7 +169,7 @@ export class BlogPostRepository extends BasePostgresRepository<
 
     return {
       entities: records.map((record) =>
-        this.createEntityFromDocument(this.transformRawDocument(record))
+        this.createEntityFromDocument(this.transformRawDocument(record)),
       ),
       currentPage: query?.page,
       totalPages: this.calculatePostsPages(postCount, take),
@@ -204,13 +198,12 @@ export class BlogPostRepository extends BasePostgresRepository<
       reposted: boolean;
       originalId: string | null;
       originalAuthorId: string | null;
-    }
+    },
   ) {
     return {
       ...document,
       tags: document.tags.map(({ name }) => name),
-      content:
-        document.content as BlogContents[PostT],
+      content: document.content as BlogContents[PostT],
       likesCount: document._count.favorite,
       commentsCount: document._count.comments,
     };
@@ -257,7 +250,7 @@ export class BlogPostRepository extends BasePostgresRepository<
     });
 
     return records.map((record) =>
-      this.createEntityFromDocument(this.transformRawDocument(record))
+      this.createEntityFromDocument(this.transformRawDocument(record)),
     );
   }
 

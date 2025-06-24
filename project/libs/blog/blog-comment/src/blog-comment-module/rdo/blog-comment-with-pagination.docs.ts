@@ -25,5 +25,5 @@ export const BlogCommentWithPaginationRdoDocs = {
   ItemsPerPage: {
     description: 'Number of items per page',
     example: 20,
-  }
+  },
 } as const;

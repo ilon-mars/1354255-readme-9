@@ -1,18 +1,9 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
 import 'multer';
-
+import { Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { MongoIdValidationPipe } from '@project/pipes';
 import { fillDto } from '@project/shared/helpers';
-
+import { Express } from 'express';
 import { FileUploaderService } from './file-uploader.service';
 import { UploadedFileRdo } from './rdo/uploaded-file.rdo';
 

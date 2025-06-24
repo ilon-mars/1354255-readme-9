@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
 import { Subscriber } from '@project/shared/core';
+import { Document } from 'mongoose';
 
 @Schema({
   collection: 'email-subscribers',
@@ -23,8 +22,7 @@ export class EmailSubscriberModel extends Document implements Subscriber {
   public id?: string;
 }
 
-export const EmailSubscriberSchema =
-  SchemaFactory.createForClass(EmailSubscriberModel);
+export const EmailSubscriberSchema = SchemaFactory.createForClass(EmailSubscriberModel);
 
 EmailSubscriberSchema.virtual('id').get(function () {
   return this._id.toString();

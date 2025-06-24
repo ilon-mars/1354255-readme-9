@@ -1,5 +1,4 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-
 import { EmailSubscriberError } from '../email-subscriber.constant';
 
 export class CreateSubscriberDto {

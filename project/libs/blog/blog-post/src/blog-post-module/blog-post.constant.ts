@@ -9,32 +9,32 @@ export const PostSort = {
 } as const;
 
 export const PostLinkValidation = {
-  MaxLength: 300
+  MaxLength: 300,
 } as const;
 
 export const PostQuoteValidation = {
   Quote: {
     MinLength: 20,
-    MaxLength: 300
+    MaxLength: 300,
   },
   Author: {
     MinLength: 3,
-    MaxLength: 50
+    MaxLength: 50,
   },
 } as const;
 
 export const PostTextValidation = {
   Title: {
     MinLength: 20,
-    MaxLength: 50
+    MaxLength: 50,
   },
   Teaser: {
     MinLength: 50,
-    MaxLength: 255
+    MaxLength: 255,
   },
   Text: {
     MinLength: 100,
-    MaxLength: 1024
+    MaxLength: 1024,
   },
 } as const;
 
@@ -46,7 +46,7 @@ export const PostVideoValidation = {
 export const PostTagsValidation = {
   MinLength: 3,
   MaxLength: 10,
-  MaxCount: 8
+  MaxCount: 8,
 } as const;
 
 export const YOUTUBE_REGEXP =

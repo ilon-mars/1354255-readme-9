@@ -1,27 +1,28 @@
 import { NotFoundException } from '@nestjs/common';
-import { Document, Model } from 'mongoose';
-
 import { Entity, EntityFactory, StorableEntity } from '@project/shared/core';
-
+import { Document, Model } from 'mongoose';
 import { Repository } from './repository.interface';
 
 export abstract class BaseMongoRepository<
   T extends Entity & StorableEntity<ReturnType<T['toPOJO']>>,
-  DocumentType extends Document
-> implements Repository<T> {
-
+  DocumentType extends Document,
+> implements Repository<T>
+{
   constructor(
     protected entityFactory: EntityFactory<T>,
     protected readonly model: Model<DocumentType>,
-  ) { }
-
+  ) {}
 
   protected createEntityFromDocument(document: DocumentType): T | null {
     if (!document) {
       return null;
     }
 
-    const plainObject = document.toObject({ getters: true, versionKey: false, flattenObjectIds: true }) as ReturnType<T['toPOJO']>;
+    const plainObject = document.toObject({
+      getters: true,
+      versionKey: false,
+      flattenObjectIds: true,
+    }) as ReturnType<T['toPOJO']>;
     return this.entityFactory.create(plainObject);
   }
 
@@ -38,11 +39,8 @@ export abstract class BaseMongoRepository<
   }
 
   public async update(entity: T): Promise<void> {
-    const updatedDocument = await this.model.findByIdAndUpdate(
-      entity.id,
-      entity.toPOJO(),
-      { new: true, runValidators: true }
-    )
+    const updatedDocument = await this.model
+      .findByIdAndUpdate(entity.id, entity.toPOJO(), { new: true, runValidators: true })
       .exec();
 
     if (!updatedDocument) {

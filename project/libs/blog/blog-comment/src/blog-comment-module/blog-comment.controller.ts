@@ -1,20 +1,10 @@
-import {
-  Controller,
-  Get,
-  Param,
-  HttpCode,
-  HttpStatus,
-  Body,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-
 import { fillDto } from '@project/shared/helpers';
-
-import { BlogCommentService } from './blog-comment.service';
-import { CommentRdo } from './rdo/comment.rdo';
-import { AuthorIdDto } from './dto/author-id.dto';
 import { BlogCommentResponseMessage } from './blog-comment.constant';
+import { BlogCommentService } from './blog-comment.service';
+import { AuthorIdDto } from './dto/author-id.dto';
+import { CommentRdo } from './rdo/comment.rdo';
 
 @Controller('comments')
 export class BlogCommentController {
@@ -57,10 +47,7 @@ export class BlogCommentController {
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('delete/:id')
-  public async destroy(
-    @Param('id') id: string,
-    @Body() { authorId }: AuthorIdDto
-  ) {
+  public async destroy(@Param('id') id: string, @Body() { authorId }: AuthorIdDto) {
     await this.blogCommentService.deleteComment(id, authorId);
   }
 }

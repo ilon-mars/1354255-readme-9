@@ -1,5 +1,4 @@
 import { PostType } from '@project/shared/core';
-
 import { BlogPostContentRdo } from './blog-post-content.rdo';
 
 export const BlogPostRdoDocs = {
@@ -38,8 +37,7 @@ export const BlogPostRdoDocs = {
     description: 'Post content',
     example: {
       title: 'Заголовок на 20+ символов',
-      teaser:
-        'Текст с анонсом публикации. Минимальная длина 50 символов, максимальная 255.',
+      teaser: 'Текст с анонсом публикации. Минимальная длина 50 символов, максимальная 255.',
       text: 'Текст публикации. Минимальная длина 100 символов, максимальная 1024 символа.',
     },
   },
@@ -68,5 +66,5 @@ export const BlogPostRdoDocs = {
   OriginalAuthorId: {
     description: 'The id of the original author, if the post is reposted',
     example: '677e53ed7baca31a45997160',
-  }
+  },
 } as const;

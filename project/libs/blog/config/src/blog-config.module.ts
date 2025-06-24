@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
 import rabbitConfig from './configurations/rabbit.config';
 
 const ENV_BLOG_FILE_PATH = 'apps/blog/blog.env';
@@ -15,4 +14,4 @@ const ENV_BLOG_FILE_PATH = 'apps/blog/blog.env';
     }),
   ],
 })
-export class BlogConfigModule { }
+export class BlogConfigModule {}

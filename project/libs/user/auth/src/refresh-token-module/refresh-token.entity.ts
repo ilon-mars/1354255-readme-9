@@ -1,8 +1,6 @@
 import { Entity, JwtToken, StorableEntity } from '@project/shared/core';
 
-export class RefreshTokenEntity
-  extends Entity
-  implements StorableEntity<JwtToken> {
+export class RefreshTokenEntity extends Entity implements StorableEntity<JwtToken> {
   public tokenId: string;
   public createdAt: Date;
   public userId: string;

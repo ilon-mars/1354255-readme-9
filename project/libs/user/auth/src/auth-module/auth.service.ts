@@ -6,16 +6,14 @@ import {
   Injectable,
   Logger,
   NotFoundException,
-  UnauthorizedException
+  UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-
 import { BlogUserEntity, BlogUserRepository } from '@project/blog-user';
 import { Token, User } from '@project/shared/core';
 import { createJWTPayload } from '@project/shared/helpers';
 import { jwtConfig } from '@project/user-config';
-
-import { ConfigType } from '@nestjs/config';
 import { ChangePasswordDto } from '../dto/change-password.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { LoginUserDto } from '../dto/login-user.dto';
@@ -31,8 +29,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @Inject(jwtConfig.KEY)
     private readonly jwtOptions: ConfigType<typeof jwtConfig>,
-    private readonly refreshTokenService: RefreshTokenService
-  ) { }
+    private readonly refreshTokenService: RefreshTokenService,
+  ) {}
 
   public async register(dto: CreateUserDto): Promise<BlogUserEntity> {
     const { email, name, avatar, password } = dto;
@@ -41,7 +39,7 @@ export class AuthService {
       email,
       name,
       avatar,
-      passwordHash: ''
+      passwordHash: '',
     };
 
     const existUser = await this.blogUserRepository.findByEmail(email);
@@ -50,7 +48,7 @@ export class AuthService {
       throw new ConflictException(AuthError.UserExists);
     }
 
-    const userEntity = await new BlogUserEntity(blogUser).setPassword(password)
+    const userEntity = await new BlogUserEntity(blogUser).setPassword(password);
 
     await this.blogUserRepository.save(userEntity);
 
@@ -65,7 +63,7 @@ export class AuthService {
       throw new NotFoundException(AuthError.UserNotFound);
     }
 
-    if (!await existUser.comparePassword(password)) {
+    if (!(await existUser.comparePassword(password))) {
       throw new UnauthorizedException(AuthError.UserCredentialsWrong);
     }
 
@@ -93,21 +91,15 @@ export class AuthService {
 
     try {
       const accessToken = await this.jwtService.signAsync(accessTokenPayload);
-      const refreshToken = await this.jwtService.signAsync(
-        refreshTokenPayload,
-        {
-          secret: this.jwtOptions.refreshTokenSecret,
-          expiresIn: this.jwtOptions.refreshTokenExpiresIn,
-        }
-      );
+      const refreshToken = await this.jwtService.signAsync(refreshTokenPayload, {
+        secret: this.jwtOptions.refreshTokenSecret,
+        expiresIn: this.jwtOptions.refreshTokenExpiresIn,
+      });
 
       return { accessToken, refreshToken };
     } catch (error) {
       this.logger.error('[Token generation error]: ' + error.message);
-      throw new HttpException(
-        'Ошибка при создании токена.',
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      throw new HttpException('Ошибка при создании токена.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -144,9 +136,7 @@ export class AuthService {
     const subscriber = await this.blogUserRepository.findById(subscriberId);
 
     if (!subscriber) {
-      throw new NotFoundException(
-        `Current user (subscriber) with id ${subscriberId} not found`
-      );
+      throw new NotFoundException(`Current user (subscriber) with id ${subscriberId} not found`);
     }
 
     const subscribedTo = await this.blogUserRepository.findById(subscribedToId);
@@ -156,9 +146,7 @@ export class AuthService {
     }
 
     if (subscriber.subscriptions.includes(subscribedToId)) {
-      subscriber.subscriptions = subscriber.subscriptions.filter(
-        (id) => id !== subscribedToId
-      );
+      subscriber.subscriptions = subscriber.subscriptions.filter((id) => id !== subscribedToId);
       subscribedTo.subscribersCount -= 1;
     } else {
       subscriber.subscriptions.push(subscribedToId);

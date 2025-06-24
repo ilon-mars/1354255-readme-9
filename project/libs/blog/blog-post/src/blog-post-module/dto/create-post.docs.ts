@@ -15,5 +15,5 @@ export const CreatePostDtoDocs = {
     description: 'Array of tags',
     example: ['cats', 'celebrities'],
     required: false,
-  }
+  },
 } as const;
