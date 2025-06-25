@@ -20,8 +20,8 @@ export class BlogCommentService {
     return await this.blogCommentRepository.findByPostId(postId, query);
   }
 
-  public async createComment(dto: CreateCommentDto): Promise<BlogCommentEntity> {
-    const newComment = new BlogCommentEntity(dto);
+  public async createComment(postId: string, dto: CreateCommentDto): Promise<BlogCommentEntity> {
+    const newComment = new BlogCommentEntity({ ...dto, postId });
     await this.blogCommentRepository.save(newComment);
 
     return newComment;
