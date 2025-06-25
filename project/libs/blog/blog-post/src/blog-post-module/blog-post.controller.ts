@@ -48,11 +48,9 @@ export class BlogPostController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Get('notify')
   public async notifyNewPosts() {
-    const posts = await this.blogPostService.getPostsToNotify();
+    const posts = await this.blogPostService.getPojoPostsToNotify()
 
-    const pojoPosts = posts.map((post) => post.toPOJO());
-
-    await this.notificationsService.notifyNewPosts(pojoPosts);
+    await this.notificationsService.notifyNewPosts(posts);
 
     await this.blogPostService.makeNotifyRecord();
   }

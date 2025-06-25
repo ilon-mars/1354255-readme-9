@@ -26,6 +26,7 @@ export class BlogPostService {
 
   public async createPost(dto: CreatePostDto): Promise<BlogPostEntity> {
     const newPost = BlogPostFactory.createFromCreatePostDto(dto);
+
     await this.blogPostRepository.save(newPost);
 
     return newPost;
@@ -129,10 +130,13 @@ export class BlogPostService {
 
   public async createComment(postId: string, dto: CreateCommentDto) {
     const existsPost = await this.blogPostRepository.findById(postId);
+
     if (!existsPost) {
       throw new NotFoundException(`Post with id ${postId} was not found`);
     }
+
     const newComment = await this.blogCommentService.createComment(postId, dto);
+
     return newComment;
   }
 
@@ -155,5 +159,11 @@ export class BlogPostService {
 
   public async makeNotifyRecord() {
     await this.blogPostRepository.makeNotifyRecord();
+  }
+
+  public async getPojoPostsToNotify() {
+    const posts = await this.getPostsToNotify();
+
+    return posts.map((post) => post.toPOJO());
   }
 }
